@@ -1,6 +1,5 @@
 import hashlib
 import sys
-#import pytesseract
 from telegram.ext.dispatcher import run_async
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from telegram import Update, Bot, ParseMode
