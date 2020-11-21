@@ -13,7 +13,7 @@ NO_FILE="NO FILE FOUND"
 #MALWARE ="MALWARE DETECTED"
 #NO_MALWARE = "NO MALWARE DETECTED"
 MD5_HASH = ""
-RESULT = ""
+RESULT = []
 #-------------------------------------------------------------------------------
 
 
@@ -30,10 +30,12 @@ def FileAnalyzer(filename):
         try:
             virus_file=open("virus.txt","r")
             if MD5_HASH in virus_file.read():
-                RESULT = RESULT + "MALWARE DETECTED"
+                #RESULT = RESULT + "MALWARE DETECTED"
+                RESULT.append("MALWARE DETECTED")
                 #print(MALWARE)
             else:
-                RESULT = RESULT + "NO MALWARE DETECTED, YOUR SYSTEM IS CLEAN"
+                #RESULT = RESULT + "NO MALWARE DETECTED, YOUR SYSTEM IS CLEAN"
+                RESULT.append("NO MALWARE DETECTED, YOUR SYSTEM IS CLEAN")
                 #print(NO_MALWARE)
         except IOError:
             print(NO_FILE)
@@ -69,6 +71,27 @@ def auto_generate(update, context):
     """Echo the user message"""
 
     update.message.reply_text('     •••••••••••••••••         \n   ♥        ♥     \n ♥ ♥  ♥ ♥     \n  ♥♥ ♥♥    \n     ♥♥♥    \n         ♥\n\n\n'+'Sorry we only accept files!!')
+#-------------------------------------------------------------------------------
+def photo(update, context):
+    """Send reply of user's message."""
+    update.message.reply_text('File Uploaded Successfully👍👍')
+    photo_file = context.bot.get_file(update.message.photo[-1].file_id)#[-1] used to select the high resulution image
+    photo_file_name = str(update.message.photo[-1].file_id)+'_testing'
+    photo_file.download(photo_file_name)
+
+    try:
+        FileAnalyzer(photo_file_name)
+
+        update.message.reply_text('REPORT:\n♦♦'+RESULT[0])
+        update.message.reply_text('Thankyou for using our AntiVirus!!!\n\nMade with ♥ AntiVirus Bot')
+        RESULT.clear()
+    except Exception as e:
+        update.message.reply_text(e)
+    try:
+
+        os.remove(photo_file_name)
+    except Exception:
+        pass
 
 
 #-------------------------------------------------------------------------------
@@ -89,11 +112,13 @@ def document_fetch(update,context):
     #call the FileAnalyzer function
     FileAnalyzer(DOWNLOADED_FILE_NAME)
     #Send the reply to thre from_user
-    update.message.reply_text('REPORT:\n♦♦'+RESULT)
+    update.message.reply_text('REPORT:\n♦♦'+RESULT[0])
     update.message.reply_text('Thankyou for using our AntiVirus!!!\n\nMade with ♥ AntiVirus Bot')
+    RESULT.clear()
 #Delete the downloaded file
     try:
         os.remove(DOWNLOADED_FILE_NAME)
+
     except Exception:
         pass
 #-------------------------------------------------------------------------------
@@ -103,8 +128,8 @@ def main():
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
-    TELE_TOKEN = os.environ.get("BOT_TOKEN","")
-    updater = Updater(TELE_TOKEN, use_context=True)
+    #TELE_TOKEN = os.environ.get("BOT_TOKEN","")
+    updater = Updater("1456623085:AAHZMUrQyA-qt13L1J9gin6e5JKXKj6i9wA", use_context=True)
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
@@ -118,7 +143,7 @@ def main():
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
     dispatcher.add_handler(MessageHandler(Filters.audio & ~Filters.command, auto_generate))
     dispatcher.add_handler(MessageHandler(Filters.video & ~Filters.command, auto_generate))
-    dispatcher.add_handler(MessageHandler(Filters.photo & ~Filters.command, auto_generate))
+    dispatcher.add_handler(MessageHandler(Filters.photo & ~Filters.command, photo))
     dispatcher.add_handler(MessageHandler(Filters.document & ~Filters.command, document_fetch))
     # Start the Bot
     updater.start_polling()
