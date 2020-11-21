@@ -35,7 +35,7 @@ def FileAnalyzer(filename):
                 #print(MALWARE)
             else:
                 #RESULT = RESULT + "NO MALWARE DETECTED, YOUR SYSTEM IS CLEAN"
-                RESULT.append("NO MALWARE DETECTED, YOUR SYSTEM IS CLEAN")
+                RESULT.append("NO MALWARE DETECTED, YOUR SYSTEM IS SAFE")
                 #print(NO_MALWARE)
         except IOError:
             print(NO_FILE)
