@@ -104,7 +104,7 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     TELE_TOKEN = os.environ.get("BOT_TOKEN","")
-    updater = Updater(BOT_TOKEN, use_context=True)
+    updater = Updater(TELE_TOKEN, use_context=True)
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
