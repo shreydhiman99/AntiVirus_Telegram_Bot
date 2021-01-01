@@ -9,3 +9,6 @@ Antivirus bot coded in python using python-telegram-bot api.
   
 # Dependencies
 ♠ pip install python-telegram-bot
+
+# Screenshots
+![Screenshot](pic1.jpg)  ![Screenshot](pic2.jpg)  ![Screenshot](pic3.jpg)  ![Screenshot](pic4.jpg)
